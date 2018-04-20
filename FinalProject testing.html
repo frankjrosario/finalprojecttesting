@@ -1,0 +1,120 @@
+<html>
+<head>
+    <title>Responsive Art</title>
+<script>
+var canvas;
+var context;
+var triangles = [];
+var circles = [];
+var rectangles = [];
+var timer;
+function degreesToRadians(degrees)
+{
+return (degrees * Math.PI)/180;
+}
+function init()
+{
+  canvas = document.getElementById('canvas');
+  context = canvas.getContext('2d');
+
+  //resize canvas fit the window
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas, false);
+  window.addEventListener('orientationchange', resizeCanvas, false);
+  //add a triangle where the user clicks
+canvas.onclick = function(event)
+{
+    handleClick(event.clientX, event.clientY);
+};
+  //add a timer that redraws the canvas --remember to move the triangles
+
+
+}
+function drawCircle(circle)
+{
+  var radius = Math.floor(Math.random() * 40);
+  var x = Math.floor(Math.random() * circle.width);
+  var y = Math.floor(Math.random() * circle.height);
+  context.beginPath();
+  context.arc(x, y, radius, 0, degreesToRadians(360), true);
+  context.fillStyle = circle.color;
+  context.fill();
+}
+function Triangle(x,y,color)
+{
+  this.x = x;
+  this.y = y;
+  this.color = color;
+  //give them velocities
+}
+function Circle(x,y,color)
+{
+  this.x = x;
+  this.y = y;
+  this.color = color;
+}
+function Rectangle(x,y,color)
+{
+  this.x = x;
+  this.y = y;
+  this.color = color;
+}
+function handleClick(x,y)
+{
+var colors = ['red','green','blue','purple','yellow'];
+var color = colors[Math.floor(Math.random()*colors.length)];
+triangles.push(new Triangle(x,y,color));
+for (var i=0; i < triangles.length; i++)
+{
+drawTriangle(triangles[i]);
+
+}
+drawTriangle(triangles[i]);
+
+
+
+}
+function drawTriangle(triangle)
+{
+  context.beginPath();
+   context.moveTo (triangle.x,triangle.y); // assumes x is 75, y is 50
+   context.lineTo (triangle.x + 50,triangle.y + 30); // x + 25, y + 25
+   context.lineTo (triangle.x + 50,triangle.y - 50);
+   context.fillStyle = triangle.color;
+   context.fill();
+}
+function drawRectangle(rectangle)
+{
+  context.fillRect(rectangle.x + 25, rectangle.y + 25, 100, 100);
+    context.clearRect(rectangle.x + 45, rectangle.y + 45, 60, 60);
+    context.strokeRect(rectangle.x + 50, rectangle.y + 50, 50, 50);
+}
+function resizeCanvas(){
+  canvas.width = window.innerWidth-10;
+  canvas.height = window.innerHeight-10;
+  fillBackgroundColor();
+
+  for (var i=0; i < triangles.length; i++)
+  {
+      drawTriangle(triangles[i]);
+  }
+  for (var i=0; i < circles.length; i++)
+  {
+    drawCircle(circles[i]);
+  }
+  for (var i=0; i < rectangles.length; i++)
+  {
+    drawRectangle(rectangles[i]);
+  }
+}
+function fillBackgroundColor(){
+  //make the background black
+  context.fillStyle = 'black';
+  context.fillRect(0,0, canvas.width, canvas.height);
+}
+window.onload = init;
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500">
+</body>
